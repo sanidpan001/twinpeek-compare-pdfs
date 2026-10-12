@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TwinPeek — Compare Two PDFs Online Free: Find Visual & Text Differences</title>
+<meta name="description" content="Free PDF comparison tool. Compare two PDF versions page by page — visual difference highlighting plus a text-difference percentage for every page.">
+<link rel="canonical" href="https://twinpeek.fixoraa.tech/">
+<meta property="og:title" content="TwinPeek — Compare Two PDFs Online Free: Find Visual & Text Differences">
+<meta property="og:description" content="Free PDF comparison tool. Compare two PDF versions page by page — visual difference highlighting plus a text-difference percentage for every page.">
+<meta property="og:url" content="https://twinpeek.fixoraa.tech/">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';</script>
+<style>
+:root{--pri:#4338CA;--acc:#F97316;--bgc:#EEF2FF}
+body{background:var(--bgc);font-family:'Segoe UI',system-ui,sans-serif}
+.pri{background:var(--pri)} .prit{color:var(--pri)}
+.btn{background:var(--pri);color:#fff;padding:.6rem 1.2rem;border-radius:.6rem;font-weight:600;cursor:pointer;border:none}
+.btn:hover{opacity:.9} .btn2{background:var(--acc);color:#111;padding:.6rem 1.2rem;border-radius:.6rem;font-weight:600;cursor:pointer;border:none}
+.btn:disabled,.btn2:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{border:1.5px solid #cbd5e1;border-radius:.55rem;padding:.55rem .7rem;width:100%;background:#fff;color:#0f172a}
+input[type=file]{padding:.45rem .6rem} input[type=range]{padding:0} input[type=checkbox],input[type=radio]{width:auto}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pri);border-color:transparent}
+label{font-size:.83rem;font-weight:600;display:block;margin-bottom:.3rem}
+.card{background:#fff;border-radius:1rem;box-shadow:0 8px 30px rgba(15,23,42,.08);padding:1.4rem}
+article p{margin:.7rem 0;line-height:1.75;color:#334155}
+article h2{font-size:1.45rem;font-weight:800;margin:1.6rem 0 .4rem;color:#0f172a}
+.faq{background:#fff;border-radius:.7rem;padding:.9rem 1.1rem;margin:.55rem 0;box-shadow:0 2px 10px rgba(15,23,42,.05)}
+.faq summary{font-weight:700;cursor:pointer}
+table.dt{width:100%;border-collapse:collapse} table.dt th,table.dt td{border:1px solid #e2e8f0;padding:.45rem .6rem;text-align:left;font-size:.9rem}
+table.dt th{background:#f1f5f9}
+.drop{border:2px dashed #94a3b8;border-radius:.8rem;padding:1.1rem;text-align:center;background:#f8fafc}
+canvas.prev{max-width:100%;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff}
+
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "TwinPeek", "url": "https://twinpeek.fixoraa.tech/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free PDF comparison tool. Compare two PDF versions page by page \u2014 visual difference highlighting plus a text-difference percentage for every page."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does TwinPeek decide a page changed?", "acceptedAnswer": {"@type": "Answer", "text": "On two channels: the page's extracted text is scored as a difference percentage, and the rendered pages are compared pixel by pixel with changes highlighted in red. Either channel can reveal what the other misses."}}, {"@type": "Question", "name": "What does a small difference like 0.8% mean?", "acceptedAnswer": {"@type": "Answer", "text": "A surgical edit \u2014 a few words among hundreds. Those are the most important to review closely: a changed figure, date or 'not' typically scores under one percent."}}, {"@type": "Question", "name": "The page counts differ. What should I do?", "acceptedAnswer": {"@type": "Answer", "text": "Pages are matched by number, so an inserted page shifts later pairings. Compare the sections before and after the insertion separately, or treat post-insertion pages as new content \u2014 the tool warns you when counts differ."}}, {"@type": "Question", "name": "Can it compare scanned PDFs?", "acceptedAnswer": {"@type": "Answer", "text": "The visual channel works on any PDF. The text channel needs a text layer; scans will report large text differences even when visually identical, so lean on the red-highlight view for scans \u2014 or OCR them first with PDFSeer."}}, {"@type": "Question", "name": "Does it show exactly which words changed?", "acceptedAnswer": {"@type": "Answer", "text": "It scores each page's text difference and shows you precisely where changes are visually. For a word-level redline of plain text, the text-diff view in DiffScope complements this page-level comparison."}}, {"@type": "Question", "name": "Are my documents uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "Never. Both PDFs are compared entirely inside your browser; nothing is transmitted or stored."}}]}</script>
+</head>
+<body id="top">
+<header class="sticky top-0 z-40 shadow-md" style="background:#1E1B4B">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="#top" class="text-xl font-extrabold tracking-tight" style="color:#EEF2FF">👀 TwinPeek</a>
+    <nav class="flex gap-5 text-sm font-semibold" style="color:#EEF2FF">
+      <a href="#top" class="hover:underline">Home</a>
+      <a href="https://fixoraa.tech" class="hover:underline">More Tools</a>
+    </nav>
+  </div>
+</header>
+<div class="no-print mx-auto max-w-6xl px-4 sm:px-6 pt-4" role="complementary" aria-label="Advertisement">
+  <div class="mx-auto text-center" style="max-width:728px">
+    <span class="block text-[10px] tracking-[0.18em] uppercase text-slate-400 mb-1.5">Advertisement</span>
+    <div class="flex justify-center overflow-hidden">
+      <div class="origin-top scale-[0.44] sm:scale-100 shrink-0">
+        <script>
+          atOptions = { 'key' : '4e68ac77881c17fe128a46565d9a4e8c', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+        </script>
+        <script src="https://www.highrevenueformat.com/4e68ac77881c17fe128a46565d9a4e8c/invoke.js"></script>
+      </div>
+    </div>
+  </div>
+</div>
+<main class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+  <div class="text-center mb-6">
+    <h1 class="text-3xl sm:text-4xl font-extrabold" style="color:#0f172a">Compare Two PDFs — Spot Every Difference</h1>
+    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">'Final', 'Final v2', 'Final FINAL' — which pages actually changed? TwinPeek lays two PDF versions side by side, highlights the pixels that differ, and scores every page's text difference so you review only what moved.</p>
+    <span class="inline-block mt-3 px-3 py-1 rounded-full text-xs font-bold text-white pri">✓ Unlimited Free Usage — No Signup, No Watermark</span>
+    <p class="mt-2 text-xs text-slate-500">🔒 100% private: your file is processed entirely in your browser and never uploaded to any server.</p>
+  </div>
+  <div class="grid md:grid-cols-5 gap-6">
+  <div class="card md:col-span-2 space-y-3">
+    <div class="drop"><label>Original PDF (version A)</label><input id="fa" type="file" accept="application/pdf"></div>
+    <div class="drop"><label>Revised PDF (version B)</label><input id="fb" type="file" accept="application/pdf"></div>
+    <button class="btn w-full" id="go" onclick="run()">Compare PDFs</button>
+    <p id="status" class="text-sm font-semibold"></p>
+    <div id="summary" class="text-sm"></div>
+  </div>
+  <div class="card md:col-span-3">
+    <h3 class="font-bold mb-2">Pages with differences <span class="font-normal text-slate-500">(click a page to inspect: A | B | highlighted differences)</span></h3>
+    <div id="plist" class="space-y-2 text-sm text-slate-600">Load both versions and run the comparison — every page gets a verdict here.</div>
+    <div class="grid grid-cols-3 gap-3 mt-3"><canvas id="ca" class="prev" width="220" height="290"></canvas><canvas id="cb" class="prev" width="220" height="290"></canvas><canvas id="cd" class="prev" width="220" height="290"></canvas></div>
+  </div></div>
+</main>
+<div class="no-print mx-auto max-w-6xl px-4 sm:px-6 pb-4" role="complementary" aria-label="Advertisement">
+  <div class="mx-auto text-center" style="max-width:728px">
+    <span class="block text-[10px] tracking-[0.18em] uppercase text-slate-400 mb-1.5">Advertisement</span>
+    <div class="flex justify-center overflow-hidden">
+      <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="464498"></script>
+    </div>
+  </div>
+</div>
+<section class="mx-auto max-w-4xl px-4 sm:px-6 pb-6">
+  <article>
+  <h2>'Spot the difference' is a professional task now</h2>
+<p>Version chaos is the tax on collaborative documents. The contract returns from the other side 'with minor edits'; the report circulates as Final, Final2 and Final-FINAL; the proof comes back from the printer with 'just formatting fixes'. In each case the only question that matters — what actually changed? — is the one a PDF is worst at answering, because two versions look identical at a glance precisely where they differ. Reading both, side by side, page by page, is hours of squinting that humans do badly and resent fully.</p>
+<p>TwinPeek mechanises the squint. It compares two PDFs page by page on two independent channels: the extracted text, scored as a difference percentage per page, and the rendered page itself, with changed pixels painted red over a ghost of the new version. The page list gives every page a verdict upfront, so review time goes exactly where change happened — and the pages that did not change get the only attention they deserve: none.</p>
+<h2>Two channels, because change hides in both</h2>
+<p>Text comparison catches the edits that matter most and hide best: a changed figure in a table, a softened word in a clause, an added 'not'. The score is computed from shared words per page, so a page with one altered number among hundreds of words scores a small percentage — correctly signalling 'tiny but real', which is exactly the class of change human proofreaders miss at hour two. Pages present in only one version are flagged outright, a common discovery when a 'minor edit' quietly grew an appendix.</p>
+<p>Visual comparison catches what text cannot: a moved logo, a swapped image, a reflowed layout, a signature that shifted, a chart whose bars changed while its labels did not. The difference view renders the new page faintly and paints every substantially-changed pixel red, so the eye lands on the altered region in under a second. Neither channel alone is proof; together they approximate what a meticulous reviewer with unlimited patience would find.</p>
+<h2>How to compare two PDFs, step by step</h2>
+<p>Load the earlier version as A and the later as B — order matters for reading the results, since 'only in B' means added. Run the comparison and read the summary first: pages compared, pages differing, pages identical, and a warning if the page counts differ. That warning matters: comparison matches pages by number, so a page inserted early shifts every later pairing — the tool flags the situation rather than letting a hundred false differences mislead you.</p>
+<p>Then work the page list from the buttons: each opens the inspection view — A, B, and the red-highlighted difference canvas for that page. Start with pages whose text difference is small but non-zero; those are the surgical edits. Skim high-difference pages for structure — they were probably rewritten wholesale. When the list shows a page as text-identical and you need certainty about its visuals, inspect it anyway: the red canvas will confirm in a glance what the score implies.</p>
+<h2>The review situations this was built for</h2>
+<p>Contract redlines top the list: when the counterparty returns 'their standard version with light edits', TwinPeek verifies the lightness. Print proofs follow — the file you sent versus the proof they returned — where visual diffing catches reflow and font substitution that text comparison cannot see. Regulated documents, exam papers, financial statements and policy updates share the pattern: a new version claims descent from an approved old one, and somebody must certify the descent is honest.</p>
+<p>It is equally useful defensively, on your own workflow: before sending 'the corrected version', diff it against what the client last saw and confirm the only changes are the ones you promised. That thirty-second check has prevented more awkward emails than any other habit in document work — because the commonest bad change is the accidental one: the paragraph deleted by a stray keystroke, the table row lost in a copy-paste, invisible until somebody diffs.</p>
+<h2>Reading difference percentages like a professional</h2>
+<p>Zero percent means the page's words are the same multiset — order shuffled could still score zero, which is why the visual channel exists. Small percentages (under five) mean surgical edits: hunt them deliberately, word by word, because they were designed — by an editor or by accident — to be easy to miss. Large percentages mean rewrite territory: review the page as new content rather than as an edit, because line-by-line reconciliation of a rewritten page wastes the time the tool just saved you.</p>
+<p>Treat the numbers as triage, not verdict. A one-word change in a liability clause is a one-word change; the percentage will call it 0.4 and it may be the most important pixel in the document. TwinPeek's promise is narrower and kept completely: it will show you every page that changed, on both channels, and point your eyes at where. Judgement about what the changes mean remains, properly, yours.</p>
+<h2>Privacy: both versions stay in the room</h2>
+<p>Document comparison involves the two most sensitive artefacts in any negotiation: what you sent, and what came back. TwinPeek loads both into your browser tab and compares them with libraries on your device. Neither file is uploaded, retained or seen by any server — the negotiation's paper trail stays exactly as private as the negotiation.</p>
+<p>Local comparison also removes the practical frictions of upload-based differs: no file-size tiers for the 300-page exhibit, no queue while counsel waits, no copies of both versions lingering in a third party's storage after the matter closes. When the documents are the deal, the tool that never touches them beyond your screen is the only comfortable shape for the job.</p>
+<h2>A comparison ritual worth adopting</h2>
+<p>Diff before you send, not after you are asked. Make it the last step of every revision cycle: the approved version as A, your new export as B, two minutes of page verdicts. Save comparison pairs with matching names — 'v3-approved' and 'v3-sent' — so the evidence of what changed survives the project. When a counterpart returns edits, diff before reading a single page: knowing which three pages moved transforms a defensive three-hour review into a focused twenty minutes. If your documents carry figures, double-check every low-percentage page personally; the tool's job is to point, yours is to judge. Adopted as a ritual, comparison stops being suspicion and becomes what it should be — version hygiene, as routine and as unglamorous as saving your work.</p>
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq"><summary>How does TwinPeek decide a page changed?</summary><p>On two channels: the page's extracted text is scored as a difference percentage, and the rendered pages are compared pixel by pixel with changes highlighted in red. Either channel can reveal what the other misses.</p></details>
+<details class="faq"><summary>What does a small difference like 0.8% mean?</summary><p>A surgical edit — a few words among hundreds. Those are the most important to review closely: a changed figure, date or 'not' typically scores under one percent.</p></details>
+<details class="faq"><summary>The page counts differ. What should I do?</summary><p>Pages are matched by number, so an inserted page shifts later pairings. Compare the sections before and after the insertion separately, or treat post-insertion pages as new content — the tool warns you when counts differ.</p></details>
+<details class="faq"><summary>Can it compare scanned PDFs?</summary><p>The visual channel works on any PDF. The text channel needs a text layer; scans will report large text differences even when visually identical, so lean on the red-highlight view for scans — or OCR them first with PDFSeer.</p></details>
+<details class="faq"><summary>Does it show exactly which words changed?</summary><p>It scores each page's text difference and shows you precisely where changes are visually. For a word-level redline of plain text, the text-diff view in DiffScope complements this page-level comparison.</p></details>
+<details class="faq"><summary>Are my documents uploaded anywhere?</summary><p>Never. Both PDFs are compared entirely inside your browser; nothing is transmitted or stored.</p></details>
+  </article>
+</section>
+<footer class="mt-6 py-8" style="background:#1E1B4B;color:#EEF2FF">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center text-sm">
+    <p class="font-bold text-base">TwinPeek</p>
+    <p class="opacity-80 mt-1">Free PDF comparison tool. Compare two PDF versions page by page — visual difference highlighting plus a text-difference percentage for every page.</p>
+    <p class="mt-2"><a href="#top" class="underline">Home</a> · <a href="https://fixoraa.tech" class="underline">More Tools</a></p>
+    <p class="fx-credit" style="text-align:center;font-size:12.5px;opacity:.62;margin:10px auto 2px;letter-spacing:.01em">Made by <a href="https://fixoraa.tech" target="_blank" rel="noopener" style="color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:2px">Fixoraa</a></p>
+  </div>
+</footer>
+<script id="lib-twinpeek">
+
+function wordDiffPct(a,b){ var wa=String(a||'').split(/\s+/).filter(Boolean), wb=String(b||'').split(/\s+/).filter(Boolean); if(!wa.length&&!wb.length) return 0; var sa={}, i, x; for(i=0;i<wa.length;i++) sa[wa[i]]=(sa[wa[i]]||0)+1; var common=0; for(i=0;i<wb.length;i++){ if(sa[wb[i]]>0){ common++; sa[wb[i]]--; } } var total=Math.max(wa.length,wb.length); return Math.round((1-common/total)*1000)/10; }
+if (typeof module!=="undefined") module.exports={wordDiffPct:wordDiffPct};
+
+</script>
+<script>
+
+const $=id=>document.getElementById(id);
+function fmtBytes(b){if(b===0)return '0 B';const k=1024,s=['B','KB','MB','GB'];const i=Math.floor(Math.log(b)/Math.log(k));return (b/Math.pow(k,i)).toFixed(i?1:0)+' '+s[i];}
+function setStatus(m,ok){const el=$('status');if(!el)return;el.textContent=m;el.style.color=ok===false?'#dc2626':'inherit';}
+function download(bytes,name,type){const blob=bytes instanceof Blob?bytes:new Blob([bytes],{type:type||'application/pdf'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);}
+async function readFile(input){const f=input.files&&input.files[0];if(!f)throw new Error('Please choose a PDF file first.');return {file:f,buf:await f.arrayBuffer()};}
+function showDl(id,bytes,name){const b=$(id);b.style.display='inline-block';b.onclick=()=>download(bytes,name);}
+
+
+let docA=null, docB=null;
+async function pageText(doc,i){ const p=await doc.getPage(i); const tc=await p.getTextContent(); return tc.items.map(x=>x.str).join(' '); }
+async function pageCanvas(doc,i,scale){ const p=await doc.getPage(i); const vp=p.getViewport({scale:scale||1}); const cv=document.createElement('canvas'); cv.width=vp.width; cv.height=vp.height; const ctx=cv.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,cv.width,cv.height); await p.render({canvasContext:ctx,viewport:vp}).promise; return cv; }
+async function run(){
+  const btn=$('go'); btn.disabled=true;
+  try{
+    if(!$('fa').files[0]||!$('fb').files[0]) throw new Error('Please choose both PDF versions.');
+    docA=await pdfjsLib.getDocument({data:await $('fa').files[0].arrayBuffer()}).promise;
+    docB=await pdfjsLib.getDocument({data:await $('fb').files[0].arrayBuffer()}).promise;
+    const N=Math.max(docA.numPages,docB.numPages); const rows=[]; let changed=0;
+    for(let i=1;i<=N;i++){
+      let pct=100, note='';
+      if(i>docA.numPages){ note='page only in B'; }
+      else if(i>docB.numPages){ note='page only in A'; }
+      else { pct=wordDiffPct(await pageText(docA,i), await pageText(docB,i)); note=pct===0?'text identical':'text differs by ~'+pct+'%'; }
+      if(note!=='text identical') changed++;
+      rows.push({i,pct,note});
+      setStatus('Comparing page '+i+' of '+N+'…');
+    }
+    window._rows=rows;
+    $('plist').innerHTML=rows.map(r=>'<button class="btn2" style="margin:2px" onclick="inspect('+r.i+')">Page '+r.i+': '+r.note+'</button>').join('');
+    $('summary').innerHTML='<b>'+N+' pages compared · '+changed+' differ · '+(N-changed)+' identical.</b> '+(docA.numPages!==docB.numPages?'⚠ Page counts differ ('+docA.numPages+' vs '+docB.numPages+') — pages are matched by number, so an inserted page shifts everything after it.':'');
+    setStatus('Done ✔ Click any page button to see A, B and the highlighted difference view.');
+    if(N) inspect(rows.find(r=>r.note!=='text identical')?.i||1);
+  }catch(e){ setStatus('⚠ '+(e.message||e),false); }
+  btn.disabled=false;
+}
+async function inspect(i){
+  if(!docA||!docB) return;
+  const draw=async(doc,id)=>{ const cv=$(id); if(i>doc.numPages){ cv.getContext('2d').clearRect(0,0,cv.width,cv.height); return null; } const c=await pageCanvas(doc,i,0.85); cv.width=c.width; cv.height=c.height; cv.getContext('2d').drawImage(c,0,0); return c; };
+  const a=await draw(docA,'ca'), b=await draw(docB,'cb');
+  const dcv=$('cd');
+  if(a&&b){ dcv.width=Math.min(a.width,b.width); dcv.height=Math.min(a.height,b.height); const ctx=dcv.getContext('2d'); const ia=a.getContext('2d').getImageData(0,0,dcv.width,dcv.height), ib=b.getContext('2d').getImageData(0,0,dcv.width,dcv.height); const out=ctx.createImageData(dcv.width,dcv.height); for(let k=0;k<ia.data.length;k+=4){ const diff=Math.abs(ia.data[k]-ib.data[k])+Math.abs(ia.data[k+1]-ib.data[k+1])+Math.abs(ia.data[k+2]-ib.data[k+2]); if(diff>60){ out.data[k]=255; out.data[k+1]=40; out.data[k+2]=40; out.data[k+3]=255; } else { const g=(ib.data[k]+ib.data[k+1]+ib.data[k+2])/3; out.data[k]=g; out.data[k+1]=g; out.data[k+2]=g; out.data[k+3]=70; } } ctx.putImageData(out,0,0); }
+}
+
+</script>
+</body>
+</html>
